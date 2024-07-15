@@ -25,13 +25,33 @@ namespace EcommerceMVC.Controllers
             var result = hangHoas.Select(p => new HangHoaViewModel
             {
                 MaHh = p.MaHh,
-                TenHh = p.TenHh,    
+                TenHh = p.TenHh,
                 DonGia = p.DonGia ?? 0,
                 Hinh = p.Hinh ?? "",
                 MoTaNgan = p.MoTaDonVi ?? "",
                 TenLoai = p.MaLoaiNavigation.TenLoai
             });
-            
+
+            return View(result);
+        }
+
+        public IActionResult Search(string? query)
+        {
+            var hanghoas = db.HangHoas.AsQueryable();
+            if (query != null)
+            {
+                hanghoas = hanghoas.Where(p => p.TenHh.Contains(query));
+            }
+
+            var result = hanghoas.Select(p => new HangHoaViewModel
+            {
+                MaHh = p.MaHh,
+                TenHh = p.TenHh,
+                DonGia = p.DonGia ?? 0,
+                Hinh = p.Hinh ?? "",
+                MoTaNgan = p.MoTaDonVi ?? "",
+                TenLoai = p.MaLoaiNavigation.TenLoai
+            });
             return View(result);
         }
     }
